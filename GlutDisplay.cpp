@@ -136,30 +136,82 @@ void GlutDisplay::RegisterUpdateCallback(std::function<void(double)> cb) {
 
 // C++ callbacks
 void GlutDisplay::Reshape(int w, int h) {
-// TODO:
+
+    window_width_ = w;
+    window_height_ = h;
+    glViewport(0, 0, window_width_, window_height_);
+
+    UpdateViewport();
+}
+
+void GlutDisplay::UpdateViewport() {
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0, window_width_, window_height_, 0, -1, 1);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+}
+
+void GlutDisplay::UpdateCursor(int x, int y) {
+
+    if (x != cursor_x_ || y != cursor_y_) {
+        cursor_x_ = x;
+        cursor_y_ = y;
+        if (cursor_callback_ != 0) {
+            cursor_callback_(cursor_x_, cursor_y_);
+        }
+    }
 }
 
 void GlutDisplay::Visibility(int state) {
 // TODO:
+    (void)state;
 }
 
 void GlutDisplay::Keyboard(int key, int x, int y) {
-// TODO:
+
+    UpdateCursor(x, y);
+    if (keyboard_callback_ != 0) {
+        keyboard_callback_(key);
+    }
 }
 
 void GlutDisplay::Cursor(int x, int y) {
-// TODO:
+
+    cursor_x_ = x;
+    cursor_y_ = y;
+    if (cursor_callback_ != 0) {
+        cursor_callback_(cursor_x_, cursor_y_);
+    }
 }
 
 void GlutDisplay::MouseButton(int button, int state, int x, int y) {
-// TODO:
+
+    UpdateCursor(x, y);
+    if (mouse_callback_ != 0) {
+        mouse_callback_(button, state);
+    }
 }
 
 void GlutDisplay::Draw() {
-// TODO:
+
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    if (draw_callback_ != 0) {
+        draw_callback_();
+    }
+
+    glutSwapBuffers();
+    glutPostRedisplay();
 }
 
 void GlutDisplay::Idle() {
-// TODO:
+
+    if (update_callback_ != 0) {
+        // TODO : put delta time in argument.
+        update_callback_(0.0);
+    }
 }
 

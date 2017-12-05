@@ -16,6 +16,7 @@ public:
 
     virtual void RegisterMouseCallback( std::function<void(int, int)> cb ) = 0;
     virtual void RegisterCursorCallback( std::function<void(int, int)> cb ) = 0;
+    virtual void RegisterKeyboardCallback(std::function<void(int)> cb) = 0;
     virtual void RegisterDrawCallback( std::function<void()> cb ) = 0;
     virtual void RegisterUpdateCallback( std::function<void(double)> cb ) = 0;
 };

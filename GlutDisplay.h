@@ -30,6 +30,8 @@ private: // static methods
 public:
     GlutDisplay();
     ~GlutDisplay();
+
+private:
     void Reshape(int w, int h);
     void Visibility(int state);
     void Keyboard(int key, int x, int y);
@@ -40,6 +42,7 @@ public:
 
 private:
     void UpdateViewport();
+    void UpdateCursor(int x, int y);
 
 private: // members
     float clear_red_;
@@ -51,6 +54,8 @@ private: // members
     int window_height_;
     int window_left_;
     int window_top_;
+    int cursor_x_;
+    int cursor_y_;
     std::function<void(int, int)> mouse_callback_;
     std::function<void(int)> keyboard_callback_;
     std::function<void(int, int)> cursor_callback_;
