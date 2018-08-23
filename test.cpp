@@ -1,4 +1,4 @@
-#include "GlutDisplay.h"
+#include "DisplayFactory.h"
 
 #include <functional>
 
@@ -18,12 +18,12 @@ void draw_callback() {
 
 int main(int argc, char** argv) {
 
-    DisplayInterface* display = new GlutDisplay();
+    DisplayInterface* display = DisplayFactory::getGlutDisplay();
 
     display->SetWindowName("test");
-    display->SetWindowSize(320, 320);
+    display->SetWindowSize(800, 800);
     display->SetWindowPosition(100, 100);
-    display->SetClearColor(0.8, 0.8, 0.8, 1.0);
+    display->SetClearColor(0.0, 0.0, 0.0, 1.0);
 
     {
         using namespace std::placeholders;
