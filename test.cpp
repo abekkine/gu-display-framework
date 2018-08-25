@@ -1,9 +1,12 @@
 #include "DisplayFactory.h"
 
+#include <GL/glut.h>
+
 #include <functional>
 
-void key_callback(int key) {
-
+bool key_callback(int key, bool pressed, bool special) {
+    (void)pressed;
+    (void)special;
     switch(key) {
     case 27:
     case 'q':
@@ -11,9 +14,25 @@ void key_callback(int key) {
     default:
         break;
     }
+
+    return true;
 }
 
-void draw_callback() {
+bool draw_callback() {
+    glLoadIdentity();
+    glTranslated(400.0, 400.0, 0.0);
+    glBegin(GL_QUADS);
+    glColor3f(1.0, 0.0, 0.0);
+    glVertex2d(0.0, 0.0);
+    glColor3f(0.0, 1.0, 0.0);
+    glVertex2d(50.0, 0.0);
+    glColor3f(0.0, 0.0, 1.0);
+    glVertex2d(50.0, 50.0);
+    glColor3f(1.0, 0.0, 1.0);
+    glVertex2d(0.0, 50.0);
+    glEnd();
+
+    return true;
 }
 
 int main(int argc, char** argv) {
@@ -27,8 +46,8 @@ int main(int argc, char** argv) {
 
     {
         using namespace std::placeholders;
-        display->RegisterKeyboardCallback( std::bind(key_callback, _1) );
-        display->RegisterDrawCallback( std::bind(draw_callback) );
+        display->AddKeyboardHandler( std::bind(key_callback, _1, _2, _3) );
+        display->AddRenderer( draw_callback );
     }
 
     display->Init(argc, argv);
@@ -37,4 +56,3 @@ int main(int argc, char** argv) {
 
     return 0;
 }
-
